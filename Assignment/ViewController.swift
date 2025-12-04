@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import SwiftUI
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
@@ -14,6 +14,10 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-
+    override func viewWillAppear(_ animated: Bool) {
+        let swiftUIView = ExpensesListView()
+         let hostViewController = UIHostingController(rootView: swiftUIView)
+         self.navigationController?.pushViewController(hostViewController, animated: true)
+    }
 }
 
