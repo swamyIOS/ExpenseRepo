@@ -6,15 +6,15 @@
 //
 
 
-struct ExpenseDTO: Decodable {
-    let id: String
-    let title: String
-    let amount: Double
-    let date: Date
+public struct ExpenseDTO: Codable {
+    public   let id: String
+    public  let title: String
+    public  let amount: Double
+    public let date: String
 }
 
 extension ExpenseDTO {
-    func toDomain() -> ExpenseModel {
+    public func toDomain() -> ExpenseModel {
         ExpenseModel(id: id, title: title, amount: amount, date: date)
     }
 }
