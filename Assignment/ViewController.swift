@@ -16,6 +16,7 @@ class ViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         let swiftUIView = ExpensesListView()
+            .environmentObject(ThemeManager.shared)
          let hostViewController = UIHostingController(rootView: swiftUIView)
          self.navigationController?.pushViewController(hostViewController, animated: true)
     }

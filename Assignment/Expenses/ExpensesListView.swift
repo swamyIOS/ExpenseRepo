@@ -11,25 +11,26 @@ import Domain
 import CommonModule
 struct ExpensesListView:View {
     @StateObject var  viewModel =  ExpensesViewModel(useCase: APPDIContainer().getExpensesUseCase())
-   
+    @EnvironmentObject var themeManager : ThemeManager
     var body: some View {
         VStack(spacing: 20) {
             
             if viewModel.isLoading {
-                ProgressView("Expenses Loading...")
-                    .progressViewStyle(CircularProgressViewStyle())
-                    .scaleEffect(1.5)
-                    .padding()
+                CustomProgressView(loadingText: ScreenConstants.Expenses.progressLoaderText.rawValue, progressColor: Assets.Color.progressColor)
             } else {
-                Text("Expense View")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                List(viewModel.list) { item in
-                    ExpenseRow(item: item)
+                CustomLabel(title: ScreenConstants.Expenses.screenTitle.rawValue, textColor: Assets.Color.textColor, font: Font.customFont(name: FontFamily.Poppins.bold.rawValue, size: 20))
+                ScrollView {
+                    LazyVStack(spacing: 16) {
+                        ForEach(viewModel.list) { item  in
+                            ExpenseRow(item: item)
+                        }
+                    }
+                    .padding(.top, 16)
                 }
             }
             
         }
+        .preferredColorScheme(themeManager.apperance)
         .onAppear {
             viewModel.fetchExpenseData()
         }
@@ -37,20 +38,4 @@ struct ExpensesListView:View {
 }
 
 
-struct ExpenseRow:View {
-    var item:ExpenseModel
-    var body: some View {
-        VStack(spacing: 15) {
-            HStack {
-                Text(item.title)
-                Spacer()
-                Text("₹\(item.amount.clean)")
-                    .foregroundColor(.red)
-            }
-            Text(item.date.toDateFormat("dd MMMM yyyy"))
-                .frame(maxWidth: .infinity,alignment: .leading)
-          
-        }.padding(20)
-           
-    }
-}
+
